@@ -23,4 +23,14 @@
             <bean class="com.rishiqing.softstone.server.TeamMemberSyncServiceImpl"/>
         </jaxws:serviceBean>
     </jaxws:server>
+    <jaxws:server id="teamGroupSyncService" serviceClass="com.rishiqing.softstone.server.TeamGroupSyncService" address="/TeamGroupSyncService">
+        <jaxws:serviceBean>
+            <bean class="com.rishiqing.softstone.server.TeamGroupSyncServiceImpl"/>
+        </jaxws:serviceBean>
+    </jaxws:server>
+    <jaxws:server id="businessService" serviceClass="com.rishiqing.softstone.server.BusinessService" address="/BusinessService">
+        <jaxws:serviceBean>
+            <bean class="com.rishiqing.softstone.server.BusinessServiceImpl"/>
+        </jaxws:serviceBean>
+    </jaxws:server>
 </beans>

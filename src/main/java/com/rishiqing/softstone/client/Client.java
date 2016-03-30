@@ -1,5 +1,6 @@
 package com.rishiqing.softstone.client;
 
+import com.rishiqing.softstone.server.BusinessService;
 import com.rishiqing.softstone.server.TeamMemberSyncService;
 
 import javax.xml.ws.soap.SOAPBinding;
@@ -14,27 +15,35 @@ import javax.xml.ws.Service;
  * To change this template use File | Settings | File Templates.
  */
 public class Client {
-    private static final QName SERVICE_NAME =
-            new QName("http://server.softstone.rishiqing.com/","TeamMemberSyncService");
 
-    private static final QName PORT_NAME =
-            new QName("http://server.softstone.rishiqing.com/", "TeamMemberSyncServicePort");
+    private static final String KEY = "DGx8IgQC";
 
-    public static void main(String[] args){
-        Service service = Service.create(SERVICE_NAME);
-        String endpointAddress = "http://localhost:8080/softstoneApp/services/TeamMemberSyncService";
-        service.addPort(PORT_NAME, SOAPBinding.SOAP11HTTP_BINDING, endpointAddress);
+    private static final String NAMESPACE = "http://server.softstone.rishiqing.com/";
+    private static final String ROOTURL = "http://localhost:8080/softstoneApp/services/";
 
-        TeamMemberSyncService teamMemberService = service.getPort(TeamMemberSyncService.class);
+    /**
+     * 业务接口
+     */
+    public static void testBusinessService(){
+        String singleService = "BusinessService";
+        String singleServicePort = "BusinessServicePort";
+        QName serviceName = new QName(NAMESPACE, singleService);
+        QName portName = new QName(NAMESPACE, singleServicePort);
 
-        System.out.println("------teamMemberSyncService:" + teamMemberService);
+        Service service = Service.create(serviceName);
+        String endpointAddress = ROOTURL + singleService;
+        service.addPort(portName, SOAPBinding.SOAP11HTTP_BINDING, endpointAddress);
+
+        BusinessService businessService = service.getPort(BusinessService.class);
+
+        System.out.println("------teamMemberSyncService:" + businessService);
         String requestXML = "<?xml version='1.0' encoding='UTF-8'?>\n" +
                 "  <Msg>\n" +
                 "    <Head>\n" +
                 "      <Code>APP00001</Code>\n" +
-                "      <CTID>7604_20160324172500022_0586</CTID>\n" +
+                "      <CTID>7604_20160330160800013_5CFB</CTID>\n" +
                 "      <AppID>ff80808148bbb4390148bf866eb201a1</AppID>\n" +
-                "      <SubmitTime>20160324172500022</SubmitTime>\n" +
+                "      <SubmitTime>20160330160800013</SubmitTime>\n" +
                 "      <Version>1</Version>\n" +
                 "      <Priority>10</Priority>\n" +
                 "    </Head>\n" +
@@ -57,9 +66,43 @@ public class Client {
                 "WzSa/iwqfvZBQ4mX9b68iFyzW11zYkE1H5enUi1VzT/2ctUN1bdPGYjR6aeljPVdam4z+wue5oev\n" +
                 "gICnkFIfkoLz8TTE5OzlMKkIHFzHkqs=</Body>\n" +
                 "  </Msg>\n";
+        String str = businessService.execute(requestXML);
+
+        System.out.println("-------client console-----");
+        System.out.println(str);
+    }
+    /**
+     *  团队成员信息同步
+     */
+    public static void testTeamMemberService(){
+        String singleService = "TeamMemberSyncService";
+        String singleServicePort = "TeamMemberSyncServicePort";
+        QName serviceName = new QName(NAMESPACE, singleService);
+        QName portName = new QName(NAMESPACE, singleServicePort);
+
+        Service service = Service.create(serviceName);
+        String endpointAddress = ROOTURL + singleService;
+        service.addPort(portName, SOAPBinding.SOAP11HTTP_BINDING, endpointAddress);
+
+        TeamMemberSyncService teamMemberService = service.getPort(TeamMemberSyncService.class);
+
+        System.out.println("------teamMemberSyncService:" + teamMemberService);
+        String requestXML = "";
         String str = teamMemberService.execute(requestXML);
 
         System.out.println("-------client console-----");
         System.out.println(str);
+    }
+
+    /**
+     * 团队群组信息同步
+     */
+    public static void testTeamGroupService(){
+
+    }
+
+
+    public static void main(String[] args){
+        testBusinessService();
     }
 }

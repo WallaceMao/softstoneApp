@@ -24,6 +24,8 @@ import java.net.URL;
             serviceName = "TeamMemberSyncService")
 public class TeamMemberSyncServiceImpl implements TeamMemberSyncService {
 
+    public static final String KEY = "DGx8IgQC";
+
     public String execute(@WebParam(name = "requestXML") String requestXML) {
         System.out.println("-----execute in TeamMemberSyncService: " + requestXML);
         try {
@@ -33,7 +35,7 @@ public class TeamMemberSyncServiceImpl implements TeamMemberSyncService {
             String body = node.getText();
             System.out.println("body value:" + body);
 
-            String result = Encrypt.decryptSSOPlain(body, "DGx8IgQC");
+            String result = Encrypt.decryptSSOPlain(body, KEY);
 
             System.out.println("----result: " + result);
         }catch (DocumentException e) {
