@@ -1,7 +1,10 @@
 package com.rishiqing.softstone.server;
 
-import com.troyjj.crypt.Encrypt;
-import org.dom4j.*;
+import com.rishiqing.api.client.RKAClient;
+import com.rishiqing.softstone.ServiceManager;
+import com.rishiqing.softstone.handler.TeamGroupHandler;
+import com.rishiqing.softstone.model.ServiceRequest;
+import com.rishiqing.softstone.model.ServiceResponse;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -17,23 +20,14 @@ import javax.jws.WebService;
             serviceName = "TeamGroupSyncService")
 public class TeamGroupSyncServiceImpl implements TeamGroupSyncService {
 
-    public static final String KEY = "DGx8IgQC";
-
     public String execute(@WebParam(name = "requestXML") String requestXML) {
         System.out.println("-----execute in TeamGroupSyncService: " + requestXML);
-        try {
-            Document d = DocumentHelper.parseText(requestXML);
+        ServiceManager mgr = new ServiceManager(new TeamGroupHandler(), new RKAClient());
 
-            Node node = d.selectSingleNode("Msg/Body");
-            String body = node.getText();
-            System.out.println("body value:" + body);
+        ServiceRequest request = new ServiceRequest(requestXML);
 
-            String result = Encrypt.decryptSSOPlain(body, KEY);
+        ServiceResponse response = mgr.executeBusiness(request);
 
-            System.out.println("----result: " + result);
-        }catch (DocumentException e) {
-            e.printStackTrace();
-        }
-        return "SUCCESS";
+        return response.getReturnXML();
     }
 }

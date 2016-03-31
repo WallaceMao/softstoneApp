@@ -4,16 +4,10 @@ import com.rishiqing.softstone.model.ApiRequest;
 import com.rishiqing.softstone.model.ApiResponse;
 import com.rishiqing.softstone.model.ServiceRequest;
 import com.rishiqing.softstone.model.ServiceResponse;
-import com.rishiqing.softstone.util.CryptoHelper;
 import com.rishiqing.softstone.util.GlobalConfig;
 import com.rishiqing.softstone.util.HandlerUtil;
-import com.troyjj.crypt.Encrypt;
-import org.dom4j.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.UUID;
 
 /**
  * 处理业务相关
@@ -22,14 +16,14 @@ import java.util.UUID;
  * Time: 17:30
  * To change this template use File | Settings | File Templates.
  */
-public class BusinessServiceHandler implements ServiceHandler {
+public class TeamGroupHandler implements ServiceHandler {
 
-    private static final String METHOD_CREATE_NEW = GlobalConfig.queryConfig("apiMethodCreateNewOrder");
-    private static final String TARGET_URL_CREATE_NEW = GlobalConfig.queryConfig("apiTargetUrlCreateNewOrder");
+    private static final String METHOD_CREATE_NEW = GlobalConfig.queryConfig("apiMethodSyncTeamGroup");
+    private static final String TARGET_URL_CREATE_NEW = GlobalConfig.queryConfig("apiTargetUrlSyncTeamGroup");
 
     private static final String APPID = GlobalConfig.queryConfig("softStoneAppId");
     //  操作码，不同的handler不一样
-    private static final String TYPEID = "APP00001";
+    private static final String TYPEID = "APP00004";
 
     private ServiceRequest request;
 
@@ -41,13 +35,31 @@ public class BusinessServiceHandler implements ServiceHandler {
     public ApiRequest prepareRequest(ServiceRequest request) {
 
         this.request = request;
-        String opType = request.getBodyValue("EcOrderInfo/OPType");
 
-        if("01".equals(opType)){
-            return handleNewOrder(request);
-        }else{
-            return handleOthers(request);
-        }
+        HashMap<String, String> m = new HashMap<String, String>();
+        //  软通动力记录的企业id
+        m.put("outerId", request.getBodyValue("EcOrderInfo/EcID"));
+        //  企业名称
+        m.put("teamName", request.getBodyValue("EcOrderInfo/EcInfo/EcName"));
+        //  企业管理员帐号
+        m.put("teamAdminAccount", request.getBodyValue("EcOrderInfo/EcInfo/AdminAccount"));
+        //  企业管理员姓名
+        m.put("teamAdminName", request.getBodyValue("EcOrderInfo/EcInfo/AdminName"));
+        //  企业管理员性别
+        m.put("teamAdminSex", request.getBodyValue("EcOrderInfo/EcInfo/AdminSex"));
+        //  企业管理员手机
+        m.put("teamAdminPhone", request.getBodyValue("EcOrderInfo/EcInfo/AdminPhone"));
+        //  企业管理员邮箱
+        m.put("teamAdminEmail", request.getBodyValue("EcOrderInfo/EcInfo/AdminEmail"));
+        //  企业管理员地址
+        m.put("teamAdminAddr", request.getBodyValue("EcOrderInfo/EcInfo/AdminAddr"));
+        //  企业联系人姓名
+        m.put("teamLinkmanName", request.getBodyValue("EcOrderInfo/EcInfo/LinkmanName"));
+        m.put("teamLinkmanFax", request.getBodyValue("EcOrderInfo/EcInfo/LinkmanFax"));
+        m.put("teamLinkmanEmail", request.getBodyValue("EcOrderInfo/EcInfo/LinkmanEmail"));
+        m.put("teamLinkmanTel", request.getBodyValue("EcOrderInfo/EcInfo/LinkmanTel"));
+
+        return new ApiRequest(METHOD_CREATE_NEW, TARGET_URL_CREATE_NEW, m);
     }
 
 
@@ -93,36 +105,5 @@ public class BusinessServiceHandler implements ServiceHandler {
                 .append("</ResultDesc>");
 
         return new ServiceResponse(headString.toString(), bodyString.toString());
-    }
-
-    private ApiRequest handleNewOrder(ServiceRequest request){
-        HashMap<String, String> m = new HashMap<String, String>();
-        //  软通动力记录的企业id
-        m.put("outerId", request.getBodyValue("EcOrderInfo/EcID"));
-        //  企业名称
-        m.put("teamName", request.getBodyValue("EcOrderInfo/EcInfo/EcName"));
-        //  企业管理员帐号
-        m.put("teamAdminAccount", request.getBodyValue("EcOrderInfo/EcInfo/AdminAccount"));
-        //  企业管理员姓名
-        m.put("teamAdminName", request.getBodyValue("EcOrderInfo/EcInfo/AdminName"));
-        //  企业管理员性别
-        m.put("teamAdminSex", request.getBodyValue("EcOrderInfo/EcInfo/AdminSex"));
-        //  企业管理员手机
-        m.put("teamAdminPhone", request.getBodyValue("EcOrderInfo/EcInfo/AdminPhone"));
-        //  企业管理员邮箱
-        m.put("teamAdminEmail", request.getBodyValue("EcOrderInfo/EcInfo/AdminEmail"));
-        //  企业管理员地址
-        m.put("teamAdminAddr", request.getBodyValue("EcOrderInfo/EcInfo/AdminAddr"));
-        //  企业联系人姓名
-        m.put("teamLinkmanName", request.getBodyValue("EcOrderInfo/EcInfo/LinkmanName"));
-        m.put("teamLinkmanFax", request.getBodyValue("EcOrderInfo/EcInfo/LinkmanFax"));
-        m.put("teamLinkmanEmail", request.getBodyValue("EcOrderInfo/EcInfo/LinkmanEmail"));
-        m.put("teamLinkmanTel", request.getBodyValue("EcOrderInfo/EcInfo/LinkmanTel"));
-
-        return new ApiRequest(METHOD_CREATE_NEW, TARGET_URL_CREATE_NEW, m);
-    }
-
-    private ApiRequest handleOthers(ServiceRequest request){
-        return null;
     }
 }

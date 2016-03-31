@@ -1,4 +1,4 @@
-package com.rishiqing.softstone.handler;
+package com.rishiqing.softstone.model;
 
 import com.rishiqing.softstone.util.CryptoHelper;
 import org.dom4j.Document;
@@ -20,16 +20,21 @@ public class ServiceRequest {
     private Node headNode;
     private Node bodyNode;
 
-    public ServiceRequest(String xml) throws DocumentException {
+    public ServiceRequest(String xml) {
         this.requestXML = xml;
 
-        Document d = DocumentHelper.parseText(requestXML);
-        this.headNode = d.selectSingleNode("Msg/Head");
+        Document d = null;
+        try {
+            d = DocumentHelper.parseText(requestXML);
+            this.headNode = d.selectSingleNode("Msg/Head");
 
-        String plainText = CryptoHelper.decode(d.selectSingleNode("Msg/Body").getText());
+            String plainText = CryptoHelper.decode(d.selectSingleNode("Msg/Body").getText());
 
-        this.bodyNode = DocumentHelper.parseText("<Body>" + plainText + "</Body>");
+            this.bodyNode = DocumentHelper.parseText("<Body>" + plainText + "</Body>");
 
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -38,6 +43,9 @@ public class ServiceRequest {
      * @return
      */
     public String getHeadValue(String xPath){
+        if(null == this.headNode){
+             return null;
+        }
         Node n = this.headNode.selectSingleNode(xPath);
         return n.getText();
     }
@@ -48,6 +56,9 @@ public class ServiceRequest {
      * @return
      */
     public String getBodyValue(String xPath){
+        if(null == this.bodyNode){
+            return null;
+        }
         Node n = this.bodyNode.selectSingleNode("Body/" + xPath);
         return n.getText();
     }
