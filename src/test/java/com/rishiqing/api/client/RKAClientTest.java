@@ -15,7 +15,6 @@ public class RKAClientTest {
 
     @Test
     public void testGetCanonicalizedRKAHeaders() throws Exception {
-        assertEquals("---", RKAClient.RKAServerLocation, "http://192.168.3.129:3000");
     }
 
     @Test
