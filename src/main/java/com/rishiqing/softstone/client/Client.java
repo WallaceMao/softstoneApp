@@ -1,5 +1,7 @@
 package com.rishiqing.softstone.client;
 
+import com.iss.saas.server.SaaS2AppService;
+import com.iss.saas.server.SaaS2AppServiceService;
 import com.rishiqing.softstone.server.BusinessService;
 import com.rishiqing.softstone.server.TeamMemberSyncService;
 
@@ -101,8 +103,20 @@ public class Client {
 
     }
 
+    /**
+     * 测试web端登录
+     */
+    public static void testWebLogin(){
+
+
+        SaaS2AppServiceService mgr = new SaaS2AppServiceService();
+        SaaS2AppService service = mgr.getSaaS2AppService();
+
+//        service.execute()
+    }
+
 
     public static void main(String[] args){
-        testBusinessService();
+        testWebLogin();
     }
 }

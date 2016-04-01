@@ -15,7 +15,7 @@ import java.net.URL;
  * 
  */
 @WebServiceClient(name = "SaaS2AppServiceService", 
-                  wsdlLocation = "file:/E:/git_space/rsqsoftstonetest/src/main/saasService.wsdl",
+                  wsdlLocation = "http://10.9.80.24:9081/csop-apiserver/services/SaaS2AppService?wsdl",
                   targetNamespace = "http://server.saas.iss.com") 
 public class SaaS2AppServiceService extends Service {
 
@@ -26,11 +26,11 @@ public class SaaS2AppServiceService extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("file:/E:/git_space/rsqsoftstonetest/src/main/saasService.wsdl");
+            url = new URL("http://10.9.80.24:9081/csop-apiserver/services/SaaS2AppService?wsdl");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(SaaS2AppServiceService.class.getName())
                 .log(java.util.logging.Level.INFO, 
-                     "Can not initialize the default wsdl from {0}", "file:/E:/git_space/rsqsoftstonetest/src/main/saasService.wsdl");
+                     "Can not initialize the default wsdl from {0}", "http://10.9.80.24:9081/csop-apiserver/services/SaaS2AppService?wsdl");
         }
         WSDL_LOCATION = url;
     }

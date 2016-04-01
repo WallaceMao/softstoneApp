@@ -3,8 +3,8 @@ package com.rishiqing.softstone.server;
 import com.rishiqing.api.client.RKAClient;
 import com.rishiqing.softstone.ServiceManager;
 import com.rishiqing.softstone.handler.BusinessServiceHandler;
-import com.rishiqing.softstone.model.ServiceRequest;
-import com.rishiqing.softstone.model.ServiceResponse;
+import com.rishiqing.softstone.model.ServiceDeserializer;
+import com.rishiqing.softstone.model.ServiceSerializer;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -25,9 +25,9 @@ public class BusinessServiceImpl implements BusinessService {
 
         ServiceManager mgr = new ServiceManager(new BusinessServiceHandler(), new RKAClient());
 
-        ServiceRequest request = new ServiceRequest(requestXML);
+        ServiceDeserializer request = new ServiceDeserializer(requestXML);
 
-        ServiceResponse response = mgr.executeBusiness(request);
+        ServiceSerializer response = mgr.executeBusiness(request);
 
         return response.getReturnXML();
     }

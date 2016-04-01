@@ -13,14 +13,14 @@ import org.dom4j.Node;
  * Time: 20:44
  * To change this template use File | Settings | File Templates.
  */
-public class ServiceRequest {
+public class ServiceDeserializer {
     //  初始请求时的XML String
     private String requestXML;
 
     private Node headNode;
     private Node bodyNode;
 
-    public ServiceRequest(String xml) {
+    public ServiceDeserializer(String xml) {
         this.requestXML = xml;
 
         Document d = null;

@@ -2,8 +2,8 @@ package com.rishiqing.softstone.handler;
 
 import com.rishiqing.softstone.model.ApiRequest;
 import com.rishiqing.softstone.model.ApiResponse;
-import com.rishiqing.softstone.model.ServiceRequest;
-import com.rishiqing.softstone.model.ServiceResponse;
+import com.rishiqing.softstone.model.ServiceDeserializer;
+import com.rishiqing.softstone.model.ServiceSerializer;
 
 /**
  * 对于webService请求的处理接口
@@ -13,6 +13,6 @@ import com.rishiqing.softstone.model.ServiceResponse;
  * To change this template use File | Settings | File Templates.
  */
 public interface ServiceHandler {
-    ApiRequest prepareRequest(ServiceRequest request);
-    ServiceResponse prepareResponse(ApiResponse response);
+    ApiRequest prepareRequest(ServiceDeserializer request);
+    ServiceSerializer prepareResponse(ApiResponse response);
 }
