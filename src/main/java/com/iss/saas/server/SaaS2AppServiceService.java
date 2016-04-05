@@ -1,5 +1,11 @@
 package com.iss.saas.server;
 
+import com.rishiqing.softstone.model.SerializeUtil;
+import com.rishiqing.softstone.model.ServiceSerializer;
+import com.rishiqing.softstone.util.GlobalConfig;
+import com.rishiqing.softstone.util.HandlerUtil;
+import com.rishiqing.softstone.util.OperationCode;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebEndpoint;
@@ -83,5 +89,4 @@ public class SaaS2AppServiceService extends Service {
     public SaaS2AppService getSaaS2AppService(WebServiceFeature... features) {
         return super.getPort(SaaS2AppService, SaaS2AppService.class, features);
     }
-
 }
