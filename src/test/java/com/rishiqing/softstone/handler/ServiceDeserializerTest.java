@@ -1,6 +1,6 @@
 package com.rishiqing.softstone.handler;
 
-import com.rishiqing.softstone.model.ServiceRequest;
+import com.rishiqing.softstone.model.ServiceDeserializer;
 import com.rishiqing.softstone.util.CryptoHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +14,9 @@ import static org.junit.Assert.*;
  * Time: 22:17
  * To change this template use File | Settings | File Templates.
  */
-public class ServiceRequestTest {
+public class ServiceDeserializerTest {
 
-    ServiceRequest request;
+    ServiceDeserializer request;
 
     @Before
     public void setUp() throws Exception {
@@ -67,7 +67,7 @@ public class ServiceRequestTest {
                 "</Body>\n" +
                 "  </Msg>\n";
 
-         request = new ServiceRequest(requestXML);
+         request = new ServiceDeserializer(requestXML);
     }
 
     @Test

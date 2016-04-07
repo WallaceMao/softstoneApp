@@ -1,11 +1,21 @@
 package com.rishiqing.softstone.client;
 
+import com.iss.saas.server.SaaS2AppService;
+import com.iss.saas.server.SaaS2AppServiceService;
+import com.rishiqing.softstone.model.SerializeUtil;
+import com.rishiqing.softstone.model.ServiceDeserializer;
+import com.rishiqing.softstone.model.ServiceSerializer;
 import com.rishiqing.softstone.server.BusinessService;
 import com.rishiqing.softstone.server.TeamMemberSyncService;
+import com.rishiqing.softstone.util.GlobalConfig;
+import com.rishiqing.softstone.util.HandlerUtil;
+import com.rishiqing.softstone.util.OperationCode;
 
 import javax.xml.ws.soap.SOAPBinding;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created with IntelliJ IDEA.
@@ -101,8 +111,41 @@ public class Client {
 
     }
 
+    /**
+     * 测试web端登录
+     */
+    public static void testWebLogin() throws MalformedURLException {
+        URL wsdlURL = new URL("http://10.9.80.24:9081/csop-apiserver/services/SaaS2AppService?wsdl");
+        QName SERVICE_NAME = new QName("http://server.saas.iss.com", "SaaS2AppServiceService");
+        Service service = Service.create(wsdlURL, SERVICE_NAME);
+        SaaS2AppService client = service.getPort(SaaS2AppService.class);
 
-    public static void main(String[] args){
-        testBusinessService();
+        String ticket = "";
+        StringBuffer sbBody = new StringBuffer();
+        sbBody.append("<SIID>")
+                .append(HandlerUtil.generateSTID())
+                .append("</STID><AppID>")
+                .append(GlobalConfig.queryConfig("softStoneAppId"))
+                .append("</AppId><Ticket>")
+                .append(ticket)
+                .append("</Ticket>");
+
+        ServiceSerializer serializer = new ServiceSerializer(
+                SerializeUtil.defaultRequestHeader(OperationCode.AUTHENTICATE),
+                sbBody.toString());
+
+        System.out.println("-------request XML:" + serializer.getReturnXML());
+        String result = client.execute(serializer.getReturnXML());
+
+        System.out.println("-----result XML:" + result);
+
+        ServiceDeserializer deserializer = new ServiceDeserializer(result);
+
+        System.out.println("-------response XML:" + deserializer.getBodyValue("ResultCode"));
+    }
+
+
+    public static void main(String[] args) throws MalformedURLException {
+        testWebLogin();
     }
 }

@@ -2,8 +2,8 @@ package com.rishiqing.softstone.handler;
 
 import com.rishiqing.softstone.model.ApiRequest;
 import com.rishiqing.softstone.model.ApiResponse;
-import com.rishiqing.softstone.model.ServiceRequest;
-import com.rishiqing.softstone.model.ServiceResponse;
+import com.rishiqing.softstone.model.ServiceDeserializer;
+import com.rishiqing.softstone.model.ServiceSerializer;
 import com.rishiqing.softstone.util.GlobalConfig;
 import com.rishiqing.softstone.util.HandlerUtil;
 
@@ -25,14 +25,14 @@ public class TeamMemberHandler implements ServiceHandler {
     //  操作码，不同的handler不一样
     private static final String TYPEID = "APP00002";
 
-    private ServiceRequest request;
+    private ServiceDeserializer request;
 
     /**
      * 实现ServiceHandler接口的方法，用于准备数据发送请求
      * @param request
      * @return
      */
-    public ApiRequest prepareRequest(ServiceRequest request) {
+    public ApiRequest prepareRequest(ServiceDeserializer request) {
 
         this.request = request;
 
@@ -68,7 +68,7 @@ public class TeamMemberHandler implements ServiceHandler {
      * @param response
      * @return
      */
-    public ServiceResponse prepareResponse(ApiResponse response) {
+    public ServiceSerializer prepareResponse(ApiResponse response) {
 
         StringBuffer headString = new StringBuffer("<Code>");
         headString.append(TYPEID)
@@ -104,6 +104,6 @@ public class TeamMemberHandler implements ServiceHandler {
                 .append(resultDesc)
                 .append("</ResultDesc>");
 
-        return new ServiceResponse(headString.toString(), bodyString.toString());
+        return new ServiceSerializer(headString.toString(), bodyString.toString());
     }
 }

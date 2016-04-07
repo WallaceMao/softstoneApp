@@ -18,6 +18,8 @@ public class GlobalConfig {
     //  日事清RKA服务器验证accessKeySecret
     private static final String accessKeySecret = "world";
 
+    //  软通动力提供的web登录wsdl访问接口
+    private static final String saasWSDLLocation = "http://10.9.80.24:9081/csop-apiserver/services/SaaS2AppService?wsdl";
     //  软通动力提供的appId
     private static final String softStoneAppId = "2c90dab253501466015397d8f74f01fb";
 

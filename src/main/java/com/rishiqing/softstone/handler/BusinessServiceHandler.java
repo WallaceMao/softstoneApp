@@ -2,18 +2,12 @@ package com.rishiqing.softstone.handler;
 
 import com.rishiqing.softstone.model.ApiRequest;
 import com.rishiqing.softstone.model.ApiResponse;
-import com.rishiqing.softstone.model.ServiceRequest;
-import com.rishiqing.softstone.model.ServiceResponse;
-import com.rishiqing.softstone.util.CryptoHelper;
+import com.rishiqing.softstone.model.ServiceDeserializer;
+import com.rishiqing.softstone.model.ServiceSerializer;
 import com.rishiqing.softstone.util.GlobalConfig;
 import com.rishiqing.softstone.util.HandlerUtil;
-import com.troyjj.crypt.Encrypt;
-import org.dom4j.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.UUID;
 
 /**
  * 处理业务相关
@@ -31,14 +25,14 @@ public class BusinessServiceHandler implements ServiceHandler {
     //  操作码，不同的handler不一样
     private static final String TYPEID = "APP00001";
 
-    private ServiceRequest request;
+    private ServiceDeserializer request;
 
     /**
      * 实现ServiceHandler接口的方法，用于准备数据发送请求
      * @param request
      * @return
      */
-    public ApiRequest prepareRequest(ServiceRequest request) {
+    public ApiRequest prepareRequest(ServiceDeserializer request) {
 
         this.request = request;
         String opType = request.getBodyValue("EcOrderInfo/OPType");
@@ -56,7 +50,7 @@ public class BusinessServiceHandler implements ServiceHandler {
      * @param response
      * @return
      */
-    public ServiceResponse prepareResponse(ApiResponse response) {
+    public ServiceSerializer prepareResponse(ApiResponse response) {
 
         StringBuffer headString = new StringBuffer("<Code>");
         headString.append(TYPEID)
@@ -92,10 +86,10 @@ public class BusinessServiceHandler implements ServiceHandler {
                 .append(resultDesc)
                 .append("</ResultDesc>");
 
-        return new ServiceResponse(headString.toString(), bodyString.toString());
+        return new ServiceSerializer(headString.toString(), bodyString.toString());
     }
 
-    private ApiRequest handleNewOrder(ServiceRequest request){
+    private ApiRequest handleNewOrder(ServiceDeserializer request){
         HashMap<String, String> m = new HashMap<String, String>();
         //  软通动力记录的企业id
         m.put("outerId", request.getBodyValue("EcOrderInfo/EcID"));
@@ -122,7 +116,7 @@ public class BusinessServiceHandler implements ServiceHandler {
         return new ApiRequest(METHOD_CREATE_NEW, TARGET_URL_CREATE_NEW, m);
     }
 
-    private ApiRequest handleOthers(ServiceRequest request){
+    private ApiRequest handleOthers(ServiceDeserializer request){
         return null;
     }
 }

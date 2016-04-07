@@ -4,8 +4,8 @@ import com.rishiqing.api.client.ApiClient;
 import com.rishiqing.softstone.handler.ServiceHandler;
 import com.rishiqing.softstone.model.ApiRequest;
 import com.rishiqing.softstone.model.ApiResponse;
-import com.rishiqing.softstone.model.ServiceRequest;
-import com.rishiqing.softstone.model.ServiceResponse;
+import com.rishiqing.softstone.model.ServiceDeserializer;
+import com.rishiqing.softstone.model.ServiceSerializer;
 
 /**
  * 通用Manager，负责根据传入的handler进行业务处理
@@ -28,7 +28,7 @@ public class ServiceManager {
      * @param request
      * @return
      */
-    public ServiceResponse executeBusiness(ServiceRequest request){
+    public ServiceSerializer executeBusiness(ServiceDeserializer request){
         ApiRequest req = this.handler.prepareRequest(request);
         ApiResponse res = this.client.send(req);
         return this.handler.prepareResponse(res);

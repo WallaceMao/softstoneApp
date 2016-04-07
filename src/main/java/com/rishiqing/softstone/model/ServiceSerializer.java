@@ -1,8 +1,6 @@
 package com.rishiqing.softstone.model;
 
-import com.rishiqing.softstone.ServiceManager;
 import com.rishiqing.softstone.util.CryptoHelper;
-import org.dom4j.Node;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,12 +9,12 @@ import org.dom4j.Node;
  * Time: 20:45
  * To change this template use File | Settings | File Templates.
  */
-public class ServiceResponse {
+public class ServiceSerializer {
 
     private String returnHead;
     private String returnBody;
 
-    public ServiceResponse(String xmlHead, String xmlBody){
+    public ServiceSerializer(String xmlHead, String xmlBody){
         this.returnHead = xmlHead;
         this.returnBody = xmlBody;
     }
