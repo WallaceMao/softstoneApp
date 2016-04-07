@@ -1,5 +1,13 @@
 package com.rishiqing;
 
+import com.rishiqing.api.client.ApiClient;
+import com.rishiqing.api.client.RKAClient;
+import com.rishiqing.softstone.model.ApiRequest;
+import com.rishiqing.softstone.model.ApiResponse;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: user 毛文强
@@ -10,9 +18,26 @@ package com.rishiqing;
 public class MyTest {
 
     public static void main(String[] args){
-        String str = "abcabx";
-        int[] n = getNext(str);
-        printArray(n);
+
+        Map m = new HashMap<String, String>();
+        m.put("username", "wallace@rishiqing.com");
+        m.put("password", "123456");
+        m.put("realName", "wallace");
+        m.put("phoneNumber", "12312341234");
+        m.put("outerId", "2016040711111");
+        ApiRequest req = new ApiRequest("POST", "/v1/users", m);
+
+        ApiClient client = new RKAClient();
+
+        ApiResponse res = client.send(req);
+
+        int code = res.getStatusCode();
+        if(code == 200){
+            System.out.println("response:----" + code + " " + res.getResponseJSON().toString());
+        }else{
+            System.out.println("response:----" + code);
+        }
+
     }
 
     public static int[] getNext(String t){

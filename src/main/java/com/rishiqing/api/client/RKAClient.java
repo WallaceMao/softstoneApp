@@ -36,9 +36,15 @@ import java.util.*;
  */
 public class RKAClient implements ApiClient {
 
-    static private final String RKAServerLocation = GlobalConfig.queryConfig("RKAServerLocation");
-    static private final String accessKeyId = GlobalConfig.queryConfig("accessKeyId");
-    static private final String accessKeySecret = GlobalConfig.queryConfig("accessKeySecret");
+    private ApiCredential credential;
+
+    public RKAClient(){
+        this.credential = new ApiCredential();
+    }
+
+    public RKAClient(ApiCredential credential){
+        this.credential = credential;
+    }
 
     private static String getCanonicalizedRKAHeaders(){
         //return "x-rka-magic:abracadabra\nx-rka-meta-author:foo@bar.com\n";
@@ -72,8 +78,8 @@ public class RKAClient implements ApiClient {
         return str;
     }
 
-    public static String sign(String before){
-        SecretKeySpec signingKey = new SecretKeySpec(accessKeySecret.getBytes(), "HmacSHA1");
+    public static String sign(String before, ApiCredential credential){
+        SecretKeySpec signingKey = new SecretKeySpec(credential.getAccessKeySecret().getBytes(), "HmacSHA1");
         Mac mac;
         String str = "";
         try {
@@ -87,7 +93,7 @@ public class RKAClient implements ApiClient {
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
-        return "RKA " + accessKeyId + ":" + str;
+        return "RKA " + credential.getAccessKeyId() + ":" + str;
     }
 
     public ApiResponse post(ApiRequest request){
@@ -102,7 +108,7 @@ public class RKAClient implements ApiClient {
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         try {
-            HttpPost httpPost = new HttpPost( RKAServerLocation + targetUrl);
+            HttpPost httpPost = new HttpPost( this.credential.getServerLocation() + targetUrl);
 
             if(params != null){
 
@@ -123,7 +129,7 @@ public class RKAClient implements ApiClient {
 
             String signature;
             String verb = "POST";
-            String contentType = "text/html";
+            String contentType = "application/x-www-form-urlencoded;charset=utf-8";
             String date = getGMTString();
             String RKAHeaders = getCanonicalizedRKAHeaders();
             String resource = targetUrl;
@@ -135,7 +141,7 @@ public class RKAClient implements ApiClient {
                     + RKAHeaders
                     + resource;
 
-            signature = sign(beforeSig);
+            signature = sign(beforeSig, this.credential);
 
             httpPost.addHeader("Content-Type", contentType);
             httpPost.addHeader("Date", date);
@@ -166,7 +172,7 @@ public class RKAClient implements ApiClient {
                 e.printStackTrace();
             }
 
-            if(null == result){
+            if(statusCode > 200 || null == result){
                 return new ApiResponse(statusCode);
             }else{
                 return new ApiResponse(statusCode, new JSONObject(result));

@@ -12,11 +12,11 @@ import java.lang.reflect.Field;
 public class GlobalConfig {
 
     //  日事清RKA验证服务器地址
-    private static final String RKAServerLocation = "http://192.168.3.129:3000";
+    public static final String RKAServerLocation = "http://localhost:3000";
     //  日事清RKA验证服务器accessId
-    private static final String accessKeyId = "hello";
+    public static final String accessKeyId = "hello";
     //  日事清RKA服务器验证accessKeySecret
-    private static final String accessKeySecret = "world";
+    public static final String accessKeySecret = "world";
 
     //  软通动力提供的web登录wsdl访问接口
     private static final String saasWSDLLocation = "http://10.9.80.24:9081/csop-apiserver/services/SaaS2AppService?wsdl";
