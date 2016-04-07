@@ -115,7 +115,6 @@ public class Client {
      * 测试web端登录
      */
     public static void testWebLogin() throws MalformedURLException {
-        System.out.println("+++++++++");
         URL wsdlURL = new URL("http://10.9.80.24:9081/csop-apiserver/services/SaaS2AppService?wsdl");
         QName SERVICE_NAME = new QName("http://server.saas.iss.com", "SaaS2AppServiceService");
         Service service = Service.create(wsdlURL, SERVICE_NAME);
@@ -137,6 +136,8 @@ public class Client {
 
         System.out.println("-------request XML:" + serializer.getReturnXML());
         String result = client.execute(serializer.getReturnXML());
+
+        System.out.println("-----result XML:" + result);
 
         ServiceDeserializer deserializer = new ServiceDeserializer(result);
 
